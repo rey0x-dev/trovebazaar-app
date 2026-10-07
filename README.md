@@ -1,85 +1,75 @@
-# TroveBazaar POS
+# React + TypeScript + Vite
 
-Frontend for **TroveBazaar**, a multi-branch point-of-sale system for secondhand clothing retail (*ropa de paca*).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-An offline-first PWA that runs in the phone's browser. The cashier scans a QR code to add an item at its current price tier, closes the ticket, and reconciles the drawer at end of shift. No app install, no dedicated hardware.
+Currently, two official plugins are available:
 
-> **Status:** early development. Requirements gathering in progress.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
----
+## React Compiler
 
-## Tech stack
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-### Core
+## Expanding the ESLint configuration
 
-| Technology | Purpose |
-|---|---|
-| **React 19** | UI library |
-| **TypeScript** | Type safety |
-| **Vite** | Build tool and dev server |
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### State and data
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-| Technology | Purpose |
-|---|---|
-| **TanStack Query** | Server state, caching, mutation persistence |
-| **TanStack Router** | Type-safe routing |
-| **Zustand** | Local cart state only |
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-TanStack Query's mutation persistence is the backbone of the offline sync layer, not an optional extra.
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 
-### Offline support
+```
 
-| Technology | Purpose |
-|---|---|
-| **vite-plugin-pwa** (Workbox) | Service worker and app shell caching |
-| **Dexie.js** | IndexedDB wrapper for the outbox queue |
+You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
 
-A sale is written to IndexedDB first with a client-generated `client_sale_id`, queued, and synced when connectivity returns. The server enforces uniqueness on that id, so retries are idempotent and can never duplicate a ticket.
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-### Scanning
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 
-| Technology | Purpose |
-|---|---|
-| **BarcodeDetector API** | Native browser QR decoding |
-| **@zxing/browser** | Fallback for browsers without native support |
-
-### Forms and UI
-
-| Technology | Purpose |
-|---|---|
-| **Tailwind CSS v4** | Styling |
-| **shadcn/ui** | Component primitives |
-| **React Hook Form** | Form state |
-| **Zod** | Schema validation, shared with API contracts |
-| **Recharts** | Dashboard charts |
-
-Touch targets are deliberately larger than default. This is operated one-handed, at speed, at a counter.
-
-### Printing
-
-Price tag sheets are laid out with CSS `@media print` and `@page`. QR images are generated server-side.
-
-### Infrastructure
-
-| Technology | Purpose |
-|---|---|
-| **Docker** | Multi-stage build, static output |
-| **GitHub Actions** | CI — typecheck, lint, tests |
-| **Dokploy + Traefik** | Deployment and reverse proxy |
-
----
-
-## Design notes
-
-**Scanning the same code repeatedly increments quantity** rather than adding duplicate rows.
-
-**Price tiers carry an assigned colour** so the cashier can confirm the scan at a glance without reading the amount.
-
-**The app must remain usable with no network.** A POS that stops working when the wifi drops is not a POS.
-
----
-
-## Related repositories
-
-- [`trovebazaar-api`](https://github.com/rey0x-dev/trovebazaar-api) — Backend API
+```
