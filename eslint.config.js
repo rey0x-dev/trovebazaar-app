@@ -19,4 +19,12 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+    {
+    // Archivos donde exportar algo que no es componente es intencional:
+    // las rutas exportan `Route` y shadcn exporta `buttonVariants`.
+    files: ['src/routes/**/*.tsx', 'src/shared/ui/**/*.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+    },
 ])
