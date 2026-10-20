@@ -4,7 +4,7 @@ import { z } from "zod"
 export const branchSchema = z.object({
   id: z.string(),
   name: z.string(),
-  domain: z.string(),
+  location: z.string(),
 
   status: z.enum(["active", "archived"]),
 
@@ -12,9 +12,9 @@ export const branchSchema = z.object({
 
   archivedAt: z.iso.datetime({ offset: true }).nullable(),
 
-  salesTodayCents: z.number().int().nullable(),
+  salesTodayCents: z.number().int().nonnegative(),
 
-  activePromotions: z.number().int().nonnegative().nullable(),
+  activePromotions: z.number().int().nonnegative(),
 })
 
 export const branchListSchema = z.array(branchSchema)

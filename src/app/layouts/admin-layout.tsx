@@ -1,8 +1,6 @@
 import { Link, Outlet, type LinkProps } from '@tanstack/react-router'
 import { Button } from '@/shared/ui/button';
-
 import {
- 
   LayoutDashboard,
   Tag,
   Package,

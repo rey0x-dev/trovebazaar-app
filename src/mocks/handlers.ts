@@ -4,6 +4,4 @@ import { branches } from "./data/branches"
 
  export const handlers = [
   http.get("/api/branches", () => HttpResponse.json(branches)),
-] 
-
- 
+]
