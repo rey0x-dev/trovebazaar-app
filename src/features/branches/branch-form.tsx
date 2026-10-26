@@ -45,15 +45,18 @@ export function BranchForm() {
         form.reset()
       },
         onError: (error) => {
-      if (error instanceof ApiError && error.status === 409) {
-        form.setError("name", { message: error.message }, { shouldFocus: true })
-      }
-      },
-    })
+          if (error instanceof ApiError && (error.status === 400 || error.status === 409)) {
+            form.setError(
+            "name",
+            { message: "Ya existe una sucursal con ese nombre" },
+            { shouldFocus: true },
+            )
+          }},
+      })
   }
 
   const error = mutation.error
-  const isNameConflict = error instanceof ApiError && error.status === 409
+  const isNameConflict = error instanceof ApiError && (error.status === 400 || error.status === 409)
   return (
     <Card>
       <CardHeader>

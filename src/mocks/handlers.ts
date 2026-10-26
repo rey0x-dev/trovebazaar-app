@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw/http"
 import { branches } from "./data/branches"
-
+import type { Branch } from "@/features/branches/schemas"
 //cambia el texto a sin mayusculas ni acentos//
 const normalize = (text: string) =>
   text
@@ -18,29 +18,27 @@ const normalize = (text: string) =>
   const body = (await request.json()) as { name: string; location: string }
 
   const duplicated = branches.some(
-  (b) => normalize(b.name) === normalize(body.name),
+    (b) => normalize(b.name) === normalize(body.name),
   )
   if (duplicated) {
-  return HttpResponse.json(
-    {
-      type: "about:blank",
-      title: "Conflicto",
-      status: 409,
-      detail: "Ya existe una sucursal con ese nombre",
-    },
-    { status: 409, headers: { "Content-Type": "application/problem+json" } },
+    return HttpResponse.json(
+      {
+        errorMessage: `Branch with name ${body.name} already exists`,
+        errorTimestamp: new Date().toISOString(),
+        errors: null,
+        status: 400,
+      },
+      { status: 400 },
     )
   }
 
-  const created = {
-    id: `br_${crypto.randomUUID().slice(0, 8)}`,
+  const created: Branch = {
+    branchId: Math.max(0, ...branches.map((b) => b.branchId)) + 1,
     name: body.name,
+    status: "ACTIVO",
     location: body.location,
-    status: "active" as const,
-    createdAt: new Date().toISOString(),
+    creationDate: new Date().toISOString(),
     archivedAt: null,
-    salesTodayCents: 0,
-    activePromotions: 0,
   }
   branches.push(created)
 

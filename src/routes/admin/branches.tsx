@@ -24,7 +24,7 @@ function BranchesPage() {
           {data && (
           <ul className="grid gap-4 sm:grid-cols-2">
             {data.map((branch) => (
-            <li key={branch.id}>
+            <li key={branch.branchId}>
               <BranchCard branch={branch} />
             </li>
             ))}

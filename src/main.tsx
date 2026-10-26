@@ -4,7 +4,7 @@ import { Providers } from "@/app/providers"
 import "@/styles/index.css"
 
 async function enableMocking() {
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV && import.meta.env.VITE_USE_MOCKS === "true") {
     const { network } = await import("virtual:msw")
     const { handlers } = await import("@/mocks/handlers")
 
