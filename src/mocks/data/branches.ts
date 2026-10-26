@@ -1,43 +1,39 @@
 //location son acento
-export const branches = [
+import type { Branch } from "@/features/branches/schemas"
+export const branches:Branch[] = [
+{
+  branchId: 1,
+  name: "Coacalco",
+  status: "ACTIVO",
+  location: "Coacalco",
+  creationDate: "2026-06-01T00:00:00-06:00",
+  archivedAt: null,
+},
   {
-    id: "br_coacalco",
-    name: "Coacalco",
-    location: "coacalco",
-    status: "active",
-    createdAt: "2026-06-01T00:00:00-06:00",
-    archivedAt: null,
-    salesTodayCents: 1842000,
-    activePromotions: 2,
-  },
-  {
-    id: "br_tultitlan",
+    branchId: 2,
     name: "Tultitlán",
     location: "tultitlan",
-    status: "active",
-    createdAt: "2026-06-01T00:00:00-06:00",
+    status: "ACTIVO",
+    creationDate: "2026-06-01T00:00:00-06:00",
     archivedAt: null,
-    salesTodayCents: 1422000,
-    activePromotions: 1,
+
   },{
-    id: "br_ecatepec",
+    branchId: 3,
     name: "Ecatepec",
     location: "ecatepec",
-    status: "active",
-    createdAt: "2026-10-01T00:00:00-06:00",
+    status: "ACTIVO",
+    creationDate: "2026-10-01T00:00:00-06:00",
     archivedAt: null,
-    salesTodayCents: 1042000,
-    activePromotions: 3,
+
   },{
-    id: "br_naucalpan",
+    branchId: 4,
     name: "Naucalpan",
     location: "naucalpan",
-    status: "archived",
-    createdAt: "2026-07-01T00:00:00-06:00",
+    status: "ARCHIVADO",
+    creationDate: "2026-07-01T00:00:00-06:00",
     archivedAt: "2026-09-01T00:00:00-06:00",
         // Sucursal archivada: ventas y promociones "no aplican".
     // "archivada: ventas y promociones en 0; la UI muestra '-' según status"
-    salesTodayCents: 0,
-    activePromotions: 0,
+
   },
 ]

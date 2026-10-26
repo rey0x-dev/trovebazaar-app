@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardDescription,CardContent, CardFooter } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge"
 import { cn } from "@/shared/lib/utils"
-import { formatMXN } from "@/shared/lib/money"
+//import { formatMXN } from "@/shared/lib/money"
 import { formatShortDate } from "@/shared/lib/date"
 import type { Branch } from "@/features/branches/schemas"
 
@@ -10,7 +10,7 @@ type BranchCardProps = {
 } 
 
 export function BranchCard({branch}: BranchCardProps) {
-    const isArchived = branch.status === "archived"
+    const isArchived = branch.status === "ARCHIVADO"
     
     return(
         <Card className={cn(isArchived && "opacity-60")}>
@@ -42,20 +42,7 @@ export function BranchCard({branch}: BranchCardProps) {
             <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <p className="text-sm text-muted-foreground"> 
-                            Ventas hoy
-                        </p>
-                        <p className="mt-1 font-semibold">
-                            {isArchived ? "-" : formatMXN(branch.salesTodayCents)}
-                        </p>
-                    </div>
-                    <div>
-                        <p className="text-sm text-muted-foreground">
-                            Promociones activas
-                        </p>
-                        <p className="mt-1 font-semibold">
-                            {isArchived ? "-" : branch.activePromotions}
-                        </p>
+                        {/*AQUI IRAN SALESTODAY Y PROMOCIONES ACTIVAS */}
                     </div>
                 </div>
             </CardContent>
@@ -67,7 +54,9 @@ export function BranchCard({branch}: BranchCardProps) {
                     ? branch.archivedAt
                     ? formatShortDate(branch.archivedAt)
                     : "-"
-                    : formatShortDate(branch.createdAt)}
+                    : branch.creationDate
+                        ? formatShortDate(branch.creationDate)
+                        : "-"}
                 </p>
             </CardFooter>
         </Card>
